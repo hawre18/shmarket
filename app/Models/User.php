@@ -17,9 +17,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name', 'email', 'password','last_name','national_code',
+        'phone','birthday','gender','email_token','google_id'
     ];
 
     /**
@@ -28,8 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
     /**
@@ -40,4 +38,33 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function verified()
+    {
+        $this->verified = 1;
+        $this->email_token = null;
+        $this->save();
+    }
+    public function photos(){
+        return $this->hasMany(Photo::Class);
+    }
+    public function products(){
+        return $this->hasMany(Product::class);
+    }
+    public function addresses(){
+        return $this->hasMany(Address::class);
+    }
+
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupon::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
