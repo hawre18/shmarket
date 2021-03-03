@@ -48,7 +48,8 @@ Route::get('shop', function () {
 Route::get('dashboard', function () {
     return view('admin.dashboard');
 });
-Route::get('/attributes','App\Http\Controllers\AddressController@create')->name('attributes.create');
+Route::get('attributes.delete/{id}','App\Http\Controllers\AttributeGroupController@delete')->name('attributes.delete');
+Route::resource('/attributes','App\Http\Controllers\AttributeGroupController');
 Route::get('/datatables', 'App\Http\Controllers\PagesController@datatables');
 Route::get('/ktdatatables', 'App\Http\Controllers\PagesController@ktDatatables');
 Route::get('/select2', 'App\Http\Controllers\PagesController@select2');

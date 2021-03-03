@@ -28,7 +28,7 @@ return [
                     'submenu' => [
                         [
                             'title' => 'افزودن',
-                            'href'=> route('attributes.create'),
+                            'page'=> '/attributes',
                         ],
                         [
                             'title' => 'ویرایش',
