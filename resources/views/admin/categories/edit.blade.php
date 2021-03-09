@@ -1,65 +1,88 @@
-@extends('admin.users.master')
-
-@section('content')
-    <section class="content" style="direction: rtl">
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h3 class="box-title pull-right">ویرایش دسته بندی{{$category->name}}</h3>
-                {{--<div class="text-left">
-                    <a class="btn btn-app">
-                        <i class="fa fa-plus" href="{{route('categories.create')}}"></i> جدید
-                    </a>
-                </div>--}}
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        <form method="post" action="\admins\categories\{{$category->id}}">
-                            @csrf
-                            <input type="hidden" name="_method" value="PATCH">
-                            <div class="form-group">
-                                <label for="name">نام</label>
-                                <input type="text" name="title" class="form-control" value="{{$category->name}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="category_parent">دسته والد</label>
-                                <select name="category_parent" class="form-control">
-                                    <option value="">انتخاب کنید</option>
-                                    @foreach($categories as $category_data)
-                                        <option value="{{$category_data->id}}" @if($category->parent_id==$category_data->id) selected @endif>{{$category_data->name}}</option>
-                                        @if(count($category_data->childrenRecursive)>0)
-                                            @include('admin.partials.category',['categories'=>$category_data->childrenRecursive, 'level'=>1,'selected_category'=>$category])
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="meta_title">عنوان سئو</label>
-                                <input type="text" name="meta_title" class="form-control" value="{{$category->meta_title}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="meta_desc">توضیحات سئو</label>
-                                <textarea type="text" name="meta_desc" class="form-control">{{$category->meta_desc}}</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="meta_keywords">کلمات کلید سئو</label>
-                                <input type="text" name="meta_keywords" class="form-control" value="{{$category->meta_keywords}}">
-                            </div>
-                            <button type="submit" class="btn btn-success pull-left">ذخیره</button>
-                        </form>
+@extends('layouts.master-admins')
+<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+    @section('content')
+        <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+            <div class="subheader py-2 py-lg-6  subheader-solid " id="kt_subheader">
+                <div class=" container-fluid  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                    <div class="d-flex align-items-center flex-wrap mr-1">
+                        <div class="d-flex align-items-baseline flex-wrap mr-5">
+                            <h5 class="text-dark font-weight-bold my-1 mr-5">دانش آموزان</h5>
+                            <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-muted">اپلیکیشن ها</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-muted">تحصیلات</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-muted">مدرسه</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-muted">دانش آموزان</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- /.box-body -->
-    </section>
-@endsection
+            <div class="d-flex flex-column-fluid">
+                <div class=" container ">
+                    <div class="flex-row-fluid ml-lg-8">
+                        <div class="card card-custom">
+                            <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="card-label font-weight-bolder text-dark">ویژگی ها</span>
+                                </h3>
+                                <div class="card-body">
+                                    <div class="datatable datatable-bordered datatable-head-custom datatable-default datatable-primary datatable-error datatable-loaded" id="kt_datatable" style="position: static; zoom: 1;">
+                                        <table class="datatable-table" style="display: block;">
+                                            <thead class="datatable-head">
+                                            <tr class="datatable-row" style="left: 0px;">
+                                                <th class="datatable-cell datatable-cell-sort text-center">
+                                                    <span>نام دسته بندی</span>
+                                                </th>
+                                                <th class="datatable-cell datatable-cell-sort text-center">
+                                                    <span>دسته والد</span>
+                                                </th>
+                                                <th class="datatable-cell datatable-cell-sort text-center">
+                                                    <span>عملیات</span>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="datatable-body">
+                                            <form method="post" action="\categories\{{$category->id}}">
+                                                @csrf
+                                                <input type="hidden" name="_method" value="PATCH">
+                                                <tr class="datatable-row" style="left: 0px;">
+                                                    <td class="datatable-cell datatable-toggle-detail">
+                                                        <input type="text" name="title" class="form-text form-control"  value="{{$category->name}}">
+                                                    </td>
+                                                    <td class="datatable-cell datatable-toggle-detail">
+                                                        <label for="category_parent">دسته والد</label>
+                                                        <select name="category_parent" class="form-control">
+                                                            <option value="">انتخاب کنید</option>
+                                                            @foreach($categories as $category_data)
+                                                                <option value="{{$category_data->id}}" @if($category->parent_id==$category_data->id) selected @endif>{{$category_data->name}}</option>
+                                                                @if(count($category_data->childrenRecursive)>0)
+                                                                    @include('admin.partials.category',['categories'=>$category_data->childrenRecursive, 'level'=>1,'selected_category'=>$category])
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </td>
+                                                    <td class="datatable-cell datatable-toggle-detail">
+                                                        <button type="submit" style="left: 20%; position: relative;" class="btn btn-primary font-weight-bold">اعمال</button>
+                                                    </td>
+                                                </tr>
+                                            </form>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endsection
+</div>

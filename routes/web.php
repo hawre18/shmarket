@@ -48,8 +48,32 @@ Route::get('shop', function () {
 Route::get('dashboard', function () {
     return view('admin.dashboard');
 });
+Route::prefix('api')->group(function () {
+    Route::get('/categories', 'App\Http\Controllers\CategoryController@apiIndex');
+    Route::post('/categories/attribute', 'App\Http\Controllers\\CategoryController@apiIndexAttribute');
+    /*Route::get('/province','Frontend\AddressController@getAllProvince');**/
+   /* Route::get('/cities/{provinceId}','Frontend\AddressController@getAllCities');*/
+    /* Route::get('/products/{id}','Frontend\ProductController@apiGetProduct'); */
+    /* Route::get('/sort-products/{id}/{sort}/{paginate}','Frontend\ProductController@apiGetSortedProduct'); */
+    /* Route::get('/category-attribute/{id}','Frontend\ProductController@apiGetCategoryAttributes'); */
+    /* Route::get('/filter-products/{id}/{sort}/{paginate}/{attributes}','Frontend\ProductController@apiGetFilterProducts'); */
+});
+
 Route::get('attributes.delete/{id}','App\Http\Controllers\AttributeGroupController@delete')->name('attributes.delete');
 Route::resource('/attributes','App\Http\Controllers\AttributeGroupController');
+Route::get('attribtes-value.delete/{id}', 'App\Http\Controllers\AttributeValueController@delete')->name('attributes-value.delete');
+Route::resource('/attributes-value','App\Http\Controllers\AttributeValueController');
+Route::get('/categories/{id}','App\Http\Controllers\CategoryController@delete')->name('categories.delete');
+Route::resource('/categories','App\Http\Controllers\CategoryController');
+Route::get('categoris.indexSetting/{id}','App\Http\Controllers\CategoryController@indexSetting')->name('categories.indexSetting');
+Route::post('categories.saveSetting/{id}','App\Http\Controllers\CategoryController@saveSetting');
+Route::get('/cities/{id}','App\Http\Controllers\CityController@delete')->name('cities.delete');
+Route::resource('/cities','App\Http\Controllers\CityController');
+Route::get('/province/{id}','App\Http\Controllers\ProvinceController@delete')->name('provinces.delete');
+Route::resource('/provinces','App\Http\Controllers\ProvinceController');
+Route::get('/products/{id}','App\Http\Controllers\ProductController@delete')->name('products.delete');
+Route::resource('/products','App\Http\Controllers\ProductController');
+Route::post('photo/upload','App\Http\Controllers\PhotoController@upload')->name('photos.upload');
 Route::get('/datatables', 'App\Http\Controllers\PagesController@datatables');
 Route::get('/ktdatatables', 'App\Http\Controllers\PagesController@ktDatatables');
 Route::get('/select2', 'App\Http\Controllers\PagesController@select2');

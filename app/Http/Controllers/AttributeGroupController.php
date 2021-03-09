@@ -95,7 +95,7 @@ class AttributeGroupController extends Controller
             if ($request->input('type_att')==true)
             $attribute->type='1';
             else
-                $attribute->type='0';
+            $attribute->type='0';
             $attribute->save();
             Session()->put('attribute_success','ویژگی '.$attribute->title.' با موفقیت بروزرسانی شد');
             return redirect('/attributes');}

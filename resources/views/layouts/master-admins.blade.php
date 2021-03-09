@@ -1213,6 +1213,10 @@
     <polyline id="SvgjsPolyline1003" points="0,0"></polyline>
     <path id="SvgjsPath1004" d="M0 0 "></path>
 </svg>
+<script>
+    $('div.alert').delay(2500).slideUp(200);
+</script>
+@yield('scripts-pic-ck')
 </body>
 </html>
 

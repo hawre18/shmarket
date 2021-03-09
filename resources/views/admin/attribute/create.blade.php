@@ -1,55 +1,7 @@
-
-<!DOCTYPE html>
-<!--
-Template نام: مترونیک - بوت استرپ 4  جی اس, React, آنگولار 9 & Vueجی اس Admin داشبورد تم
-Author: Keenthemes
- طرح: http://www.keenthemes.com/
-مخاطب: support@keenthemes.com
-دنبال کردن: www.twitter.com/keenthemes
-Dribbble: www.dribbble.com/keenthemes
-Like: www.facebook.com/keenthemes
-خرید: https://www.rtl-theme.com/metronic-admin-html-template/
-Renew حمایت کردن: https://www.rtl-theme.com/metronic-admin-html-template/
-مجوز: شما must have a valid license purchased only from themeforest(the above link) in order to legally use the theme for your project.
--->
-<html direction="rtl" dir="rtl" style="direction: rtl" >
-<!--begin::Head-->
-<head><base href="../../../../">
-    <meta charset="utf-8"/>
-    <title>مترونیک | دانش آموزان</title>
-    <meta name="description" content="دانش آموزان example"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-
-    <!--begin::Fonts-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"/>        <!--end::Fonts-->
-
-
-
-    <!--begin::Global تم Styles(used by all pages)-->
-    <link href="/assets/plugins/global/plugins.bundle.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
-    <link href="/assets/plugins/custom/prismjs/prismjs.bundle.rtl.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/css/style.bundle.rtl.css" rel="stylesheet" type="text/css"/>
-    <!--end::Global تم Styles-->
-
-    <!--begin::چیدمان تم ها(used by all pages)-->
-
-    <link href="/assets/css/themes/layout/header/base/light.rtl.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/css/themes/layout/header/menu/light.rtl.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/css/themes/layout/brand/dark.rtl.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/css/themes/layout/aside/dark.rtl.css" rel="stylesheet" type="text/css"/>        <!--end::چیدمان تم ها-->
-
-    <link rel="shortcut icon" href="/assets/media/logos/favicon.ico"/>
-
-</head>
-<!--end::Head-->
-
-<!--begin::Body-->
-<body  id="kt_body"  class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading"  >
-
-<div class="flex-row-fluid ml-lg-8">
-    <!--begin::Card-->
+@extends('layouts.master-admins')
+@section('content')
+<div class="col-sm-9 align-content-center" style="position: relative;right: 18%;">
     <div class="card card-custom">
-        <!--begin::Header-->
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <h3 class="card-title align-items-start flex-column">
                 <span class="card-label font-weight-bolder text-dark">نوع ویژگی ها</span>
@@ -57,12 +9,9 @@ Renew حمایت کردن: https://www.rtl-theme.com/metronic-admin-html-templat
             </h3>
             <div class="card-toolbar">
                 <div class="dropdown dropdown-inline" data-toggle="tooltip" title="" data-placement="left" data-original-title="افزودن سریع">
-                    <!--begin::Trigger مودال-->
                     <a href="#" class="btn btn-success font-weight-bolder font-size-sm" aria-haspopup="true" aria-expanded="false"  data-toggle="modal" data-target="#exampleمودالسفارشیScrollable">
                         افزودن نوع ویژگی جدید
                     </a>
-                    <!--end::Trigger مودال-->
-                    <!--begin::مودال Content-->
                     <div class="modal fade" id="exampleمودالسفارشیScrollable" tabindex="-1" role="dialog" aria-labelledby="staticبازگشتdrop" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content">
@@ -83,13 +32,11 @@ Renew حمایت کردن: https://www.rtl-theme.com/metronic-admin-html-templat
                                                 </div>
                                             </div>
                                             <div class="separator separator-dashed my-10"></div>
-                                            <!--begin::Heading-->
                                             <div class="row">
                                                 <div class="col-lg-9 col-xl-6 offset-xl-3">
                                                     <h3 class="font-size-h6 mb-5">نوع وابستگی:</h3>
                                                 </div>
                                             </div>
-                                            <!--end::Heading-->
                                             <div class="form-group row">
                                                 <label class="col-xl-3 col-lg-3 text-right col-form-label">چند نوعی</label>
                                                 <div class="col-lg-9 col-xl-6">
@@ -111,16 +58,10 @@ Renew حمایت کردن: https://www.rtl-theme.com/metronic-admin-html-templat
                             </div>
                         </div>
                     </div>
-                    <!--end::مودال Content-->
                 </div>
             </div>
         </div>
-        <!--end::Header-->
-
-        <!--begin::Body-->
         <div class="card-body">
-            <!--begin: جستجو Form-->
-            <!--begin::جستجو Form-->
             <div class="mb-10">
                 <div class="row align-items-center">
                     <div class="col-lg-9 col-xl-8">
@@ -147,12 +88,9 @@ Renew حمایت کردن: https://www.rtl-theme.com/metronic-admin-html-templat
                     </div>
                 </div>
             </div>
-            <!--end::جستجو Form-->
-            <!--end: جستجو Form-->
-            <!--begin: جدول داده ها-->
             <div class="datatable datatable-bordered datatable-head-custom datatable-default datatable-primary datatable-loaded" id="kt_datatable" style="">
                 @if(Session::has('attribute_success'))
-                    <div class="alert alert-success">
+                    <div id="alert" class="alert alert-success">
                         <div>{{Session('attribute_success')}}</div>
                     </div>
                 @elseif(Session::has('attribute_error'))
@@ -292,85 +230,7 @@ Renew حمایت کردن: https://www.rtl-theme.com/metronic-admin-html-templat
                     </div>
                 </div>
             </div>
-            <!--end: جدول داده ها-->
         </div>
-        <!--end::Body-->
     </div>
-    <!--end::Card-->
 </div>
-
-<!--begin::Global Config(global config for global جی اس scripts)-->
-<script>
-    var KTAppSettings  = {
-        "breakpoints": {
-            "sm": 576,
-            "md": 768,
-            "lg": 992,
-            "xl": 1200,
-            "xxl": 1400
-        },
-        "colors": {
-            "theme": {
-                "base": {
-                    "white": "#ffffff",
-                    "primary": "#3699FF",
-                    "secondary": "#E5EAEE",
-                    "success": "#1BC5BD",
-                    "info": "#8950FC",
-                    "warning": "#FFA800",
-                    "danger": "#F64E60",
-                    "light": "#E4E6EF",
-                    "dark": "#181C32"
-                },
-                "light": {
-                    "white": "#ffffff",
-                    "primary": "#E1F0FF",
-                    "secondary": "#EBEDF3",
-                    "success": "#C9F7F5",
-                    "info": "#EEE5FF",
-                    "warning": "#FFF4DE",
-                    "danger": "#FFE2E5",
-                    "light": "#F3F6F9",
-                    "dark": "#D6D6E0"
-                },
-                "inverse": {
-                    "white": "#ffffff",
-                    "primary": "#ffffff",
-                    "secondary": "#3F4254",
-                    "success": "#ffffff",
-                    "info": "#ffffff",
-                    "warning": "#ffffff",
-                    "danger": "#ffffff",
-                    "light": "#464E5F",
-                    "dark": "#ffffff"
-                }
-            },
-            "gray": {
-                "gray-100": "#F3F6F9",
-                "gray-200": "#EBEDF3",
-                "gray-300": "#E4E6EF",
-                "gray-400": "#D1D3E0",
-                "gray-500": "#B5B5C3",
-                "gray-600": "#7E8299",
-                "gray-700": "#5E6278",
-                "gray-800": "#3F4254",
-                "gray-900": "#181C32"
-            }
-        },
-        "font-family": "Poppins"
-    };
-</script>
-<!--end::Global Config-->
-
-<!--begin::Global تم Bundle(used by all pages)-->
-<script src="/assets/plugins/global/plugins.bundle.js?v=7.0.6"></script>
-<script src="/assets/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.6"></script>
-<script src="/assets/js/scripts.bundle.js?v=7.0.6"></script>
-<!--end::Global تم Bundle-->
-
-
-<!--begin::Page Scripts(used by this page)-->
-<script src="/assets/js/pages/custom/education/school/students.js?v=7.0.6"></script>
-</body>
-
-</html>
+@endsection

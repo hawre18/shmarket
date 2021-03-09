@@ -1,46 +1,84 @@
-@extends('admin.users.master')
-
-@section('content')
-    <section class="content" style="direction: rtl">
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h3 class="box-title pull-right">ویرایش مقدار ویژگی</h3>
+@extends('layouts.master-admins')
+<div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+    @section('content')
+        <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+            <div class="subheader py-2 py-lg-6  subheader-solid " id="kt_subheader">
+                <div class=" container-fluid  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                    <div class="d-flex align-items-center flex-wrap mr-1">
+                        <div class="d-flex align-items-baseline flex-wrap mr-5">
+                            <h5 class="text-dark font-weight-bold my-1 mr-5">دانش آموزان</h5>
+                            <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-muted">اپلیکیشن ها</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-muted">تحصیلات</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-muted">مدرسه</a>
+                                </li>
+                                <li class="breadcrumb-item">
+                                    <a href="" class="text-muted">دانش آموزان</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
+            <div class="d-flex flex-column-fluid">
+                <div class=" container ">
+                    <div class="flex-row-fluid ml-lg-8">
+                        <div class="card card-custom">
+                            <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                                <h3 class="card-title align-items-start flex-column">
+                                    <span class="card-label font-weight-bolder text-dark">ویژگی ها</span>
+                                </h3>
+                                <div class="card-body">
+                                    <div class="datatable datatable-bordered datatable-head-custom datatable-default datatable-primary datatable-error datatable-loaded" id="kt_datatable" style="position: static; zoom: 1;">
+                                        <table class="datatable-table" style="display: block;">
+                                            <thead class="datatable-head">
+                                            <tr class="datatable-row" style="left: 0px;">
+                                                <th class="datatable-cell datatable-cell-sort text-center">
+                                                    <span>مقدارویژگی</span>
+                                                </th>
+                                                <th class="datatable-cell datatable-cell-sort text-center">
+                                                    <span>نوع ویژگی</span>
+                                                </th>
+                                                <th class="datatable-cell datatable-cell-sort text-center">
+                                                    <span>عملیات</span>
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="datatable-body">
+                                            <form method="post" action="\attributes-value\{{$attributeValue->id}}">
+                                                @csrf
+                                                <input type="hidden" name="_method" value="PATCH">
+                                                <tr class="datatable-row" style="left: 0px;">
+                                                    <td class="datatable-cell datatable-toggle-detail">
+                                                        <input type="text" name="title" class="form-text form-control"  value="{{$attributeValue->title}}">
+                                                    </td>
+                                                    <td class="datatable-cell datatable-toggle-detail">
+                                                            <select name="attribute_group" class="form-control">
+                                                                <option value="">انتخاب کنید</option>
+                                                                @foreach($attributesGroup as $attribute)
+                                                                    <option value="{{$attribute->id}}" @if($attributeValue->attributegroup->id==$attribute->id) selected @endif>{{$attribute->title}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                    </td>
+                                                    <td class="datatable-cell datatable-toggle-detail">
+                                                        <button type="submit" style="left: 20%; position: relative;" class="btn btn-primary font-weight-bold">اعمال</button>
+                                                    </td>
+                                                </tr>
+                                            </form>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-                        @endif
-                        <form method="post" action="\admins\attributes-value\{{$attributeValue->id}}">
-                            @csrf
-                            <input type="hidden" name="_method" value="PATCH">
-                            <div class="form-group">
-                                <label for="title">عنوان</label>
-                                <input type="text" name="title" class="form-control" value="{{$attributeValue->title}}">
-                            </div>
-                            <div class="form-group">
-                                <label for="attribute_group">نوع ویژگی</label>
-                                <select name="attribute_group" class="form-control">
-                                    <option value="">انتخاب کنید</option>
-                                    @foreach($attributesGroup as $attribute)
-                                        <option value="{{$attribute->id}}" @if($attributeValue->attributegroup->id==$attribute->id) selected @endif>{{$attribute->title}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <button type="submit" class="btn btn-success pull-left">ذخیره</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-            <!-- /.box-body -->
-    </section>
-@endsection
+    @endsection
+</div>
