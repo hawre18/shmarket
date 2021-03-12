@@ -48,7 +48,7 @@
                                                         <input type="text" name="slug" class="form-control" value="{{old('slug')}}" placeholder="نام مستعار محصول">
                                                     </div>
                                                 </div>
-                                                <attribute-component ></attribute-component>
+                                                <attribute-component></attribute-component>
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 text-right col-form-label">وضعیت نشر</label>
                                                     <div class="col-lg-9 col-xl-6">
@@ -273,6 +273,11 @@
             </div>
         </div>
     </div>
+    </section>
+@endsection
+
+@section('script-vuejs')
+    <script src="{{asset('/js/app.js')}}"></script>
 @endsection
 @section('scripts-pic-ck')
     <script type="text/javascript" src="{{asset('assets/plugins/custom/dropzone.js')}}"></script>
@@ -306,5 +311,4 @@
             removePlugins:'cloudservices, easyimage'
         })
     </script>
-    </section>
 @endsection

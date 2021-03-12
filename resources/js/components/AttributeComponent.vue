@@ -1,16 +1,14 @@
 <template>
     <div>
         <div class="form-group">
-            <label class="col-xl-3 col-lg-3 text-right col-form-label">دسته بندی محصول</label>
-            <div class="col-lg-9 col-xl-6">
+            <label >دسته بندی محصول</label>
             <select name="categories[]" class="form-control" multiple v-model="categories_selected" @change="onChange($event,null)">
                 <option v-for="category in categories" :value="category.id" >{{category.name}}</option>
               </select>
-            </div>
         </div>
         <div v-if="flag">
             <div class="form-group" v-for="(attribute,index) in attributes">
-                <label>ویژگی {{attribute.title}}</label>
+                <label >ویژگی {{attribute.title}}</label>
                 <select class="form-control" @change="addAttribute($event,index)">
                     <option>انتخاب کنید</option>
                     <option v-if="!product" v-for="attributeValue in attribute.attribute_value" :value="attributeValue.id" >{{attributeValue.title}}</option>

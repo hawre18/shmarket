@@ -5,16 +5,11 @@
  */
 
 import * as vue from "vue";
-import App from './components/App.vue'
-import vueSwal from 'vue-swal'
 
-vue.use(vueSwal);
 require('./bootstrap');
 window.Vue = require('vue');
+window.Vue = require('vue');
 window.$ = require('jquery');
-var Paginate = require('vuejs-paginate');
-var StarRating=require('vue-star-rating');
-
 
 /**
  * The following block of code may be used to automatically register your
@@ -30,12 +25,7 @@ var StarRating=require('vue-star-rating');
 Vue.component('attribute-component', require('./components/AttributeComponent').default)
 Vue.component('select-city-component', require('./components/SelectCityComponent').default)
 Vue.component('product-component', require('./components/ProductComponent').default)
-Vue.component('rating-component', require('./components/RatingComponent').default)
 Vue.component('search-products', require('./components/SearchProductsComponent').default)
-Vue.component('star-rating',StarRating)
-Vue.component('paginate',Paginate)
-
-
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -46,4 +36,3 @@ Vue.component('paginate',Paginate)
 const app = new Vue({
     el: '#app',
 });
-

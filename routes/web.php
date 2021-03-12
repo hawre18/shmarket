@@ -89,3 +89,7 @@ Route::get('/icons/svg', 'App\Http\Controllers\PagesController@svg');
 Route::get('/quick-search', 'App\Http\Controllers\PagesController@quickSearch')->name('quick-search');
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

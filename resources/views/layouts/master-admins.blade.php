@@ -1204,6 +1204,7 @@
         "font-family": "Poppins"
     };
 </script>
+@yield('script-vuejs')
 <script src="/assets/plugins/global/plugins.bundle.js?v=7.0.6"></script>
 <script src="/assets/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.6"></script>
 <script src="/assets/js/scripts.bundle.js?v=7.0.6"></script>
