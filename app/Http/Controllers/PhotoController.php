@@ -4,16 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PhotoController extends Controller
 {
 
     public function upload(Request $request){
 
+
         $uploadedFile=$request->file('file');
         $filename=time().$uploadedFile->getClientOriginalName();
         $original_name=$uploadedFile->getClientOriginalName();
-        Storage::disk('local')->putFileas(
+        Storage::disk('local')->putFileAs(
             'public/photos',$uploadedFile,$filename
         );
         $photo=new Photo();

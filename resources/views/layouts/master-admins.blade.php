@@ -15,6 +15,7 @@
     <link href="/assets/plugins/global/plugins.bundle.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
     <link href="/assets/css/style.bundle.rtl.css?v=7.0.6" rel="stylesheet" type="text/css"/>
     <link rel="shortcut icon" href="/assets/media/logos/favicon.ico">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable" style="">
 <div id="kt_header_mobile" class="header-mobile align-items-center  header-mobile-fixed ">

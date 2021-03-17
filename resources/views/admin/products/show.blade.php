@@ -1,23 +1,23 @@
-@extends('admin.users.master')
-
+@extends('layouts.master-admins')
 @section('content')
-    <section class="content" style="direction: rtl">
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h3 class="box-title pull-right">محصولات</h3>
-                <div class="text-left">
-                    <a class="btn btn-app"  href="{{route('products.create')}}">
-                        <i class="fa fa-plus"></i> جدید
-                    </a>
-                </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                            <lable>عنوان محصول: {{$product->title}}</lable></br>
+    <section id="app" class="content" style="direction: rtl">
+        <div class="col-sm-9 align-content-center" style="position: relative;right: 18%;">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <div class="datatable datatable-bordered datatable-head-custom datatable-default datatable-primary datatable-loaded" id="kt_datatable" style="">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                        <lable>عنوان محصول: {{$product->title}}</lable></br>
                             <lable>کد محصول در سیستم: {{$product->sku}}</lable></br>
                             <lable>اسم مستعار: {{$product->slug}}</lable></br>
                             <lable>وضعیت نشر: {{$product->status}}</lable></br>
-                            <lable>موجودی در انبار: {{$product->instock}}</lable></br>
                             <lable>قیمت محصول: {{$product->price}}</lable></br>
                             <lable>قیمت تخفیف خورده: {{$product->discountprice}}</lable></br>
                             <lable for="shortdescription">توضیحات کوتاه: </lable></br>
@@ -28,12 +28,11 @@
                             <div id="longdescription" itemprop="description" id="tab-description" class="tab-pane active">
                                 {!! $product->long_description !!}
                             </div>
-                            <lable>برند محصول: {{$product->brand->title}}</lable></br>
-                            <lable>کاربر ایجاد کننده محصول: {{$product->user->name . ' ' . $product->user->last_name}}</lable></br>
-                            <a class="btn btn-warning" href="{{route('products.edit',$product->id)}}">ویرایش</a>
-                            <a class="btn btn-danger" href="{{route('products.delete',$product->id)}}">حذف</a>
+                            <lable>کاربر ایجاد کننده محصول: 1</lable></br>
+                    </div>
+                </div>
             </div>
-            <!-- /.box-body -->
         </div>
     </section>
 @endsection
+

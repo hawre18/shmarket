@@ -34,7 +34,7 @@
                                                     </ul>
                                                 </div>
                                             @endif
-                                            <form method="post" action="\attributes-value">
+                                            <form method="post" action="\products">
                                                 @csrf
                                                 <div class="form-group row">
                                                     <label class="col-xl-3 col-lg-3 text-right col-form-label">نام محصول</label>
@@ -103,7 +103,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
+            <a class="card-body">
                 <div class="mb-10">
                     <div class="row align-items-center">
                         <div class="col-lg-9 col-xl-8">
@@ -131,16 +131,16 @@
                     </div>
                 </div>
                 <div class="datatable datatable-bordered datatable-head-custom datatable-default datatable-primary datatable-loaded" id="kt_datatable" style="">
-                    @if(Session::has('province_success'))
+                    @if(Session::has('products_success'))
                         <div id="alert" class="alert alert-success">
                             <div>
-                                {{Session('province_success')}}
+                                {{Session('products_success')}}
                             </div>
                         </div>
-                    @elseif(Session::has('province_error'))
+                    @elseif(Session::has('products_error'))
                         <div class="alert alert-danger">
                             <div>
-                                {{Session('province_error')}}
+                                {{Session('products_error')}}
                             </div>
                         </div>
                     @endif
@@ -157,16 +157,16 @@
                         @foreach($products as $product)
                             <tr class="datatable-row" style="left: 0px;">
                                 <td class="datatable-cell datatable-toggle-detail">
-                                    <a class="datatable-toggle-detail text-center" href="">{{ $loop->index + 1 }}</a>
+                                    <a class="datatable-toggle-detail text-center" href="{{ route('products.show', $product->id)}}">{{ $loop->index + 1 }}</a>
                                 </td>
                                 <td data-field="CompanyName" aria-label="Casper-Kerluke" class="datatable-cell">
                                 <span class="text-center">
-                                    <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{$product->sku}}</div>
+                                    <a class="datatable-toggle-detail text-center" href="{{ route('products.show', $product->id)}}">{{$product->sku}}</a>
                                 </span>
                                 </td>
                                 <td data-field="CompanyName" aria-label="Casper-Kerluke" class="datatable-cell">
                                 <span class="text-center">
-                                    <div class="text-dark-75 font-weight-bolder font-size-lg mb-0">{{$product->title}}</div>
+                                    <a class="datatable-toggle-detail text-center" href="{{ route('products.show', $product->id)}}">{{$product->title}}</a>
                                 </span>
                                 </td>
                                 <td data-field="Actions" data-autohide-disabled="false" aria-label="null" class="datatable-cell text-center">

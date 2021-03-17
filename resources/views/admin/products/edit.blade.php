@@ -1,99 +1,94 @@
-@extends('admin.users.master')
-@section('styles')
-    <link rel="stylesheet" href="{{asset('/admin/dist/css/dropzone.css')}}">
-@endsection
+@extends('layouts.master-admins')
+<link rel="stylesheet" href="{{asset('assets/css/dropzone.css')}}">
 @section('content')
     <section id="app" class="content" style="direction: rtl">
-        <div class="box box-info">
-            <div class="box-header with-border">
-                <h3 class="box-title pull-right">ویرایش محصول</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-3">
-                        <form method="post" action="\admins\products\{{$product->id}}">
-                            @csrf
-                            <input type="hidden" name="_method" value="PATCH">
-                            <div class="form-group">
-                                <label for="title">نام محصول</label>
-                                <input type="text" name="title" value="{{$product->title}}" class="form-control" placeholder="نام محصول">
-                            </div>
-                            <div class="form-group">
-                                <label for="slug">نام مستعار محصول</label>
-                                <input type="text" name="slug" value="{{$product->slug}}" class="form-control" placeholder="نام مستعار محصول">
-                            </div>
-                            <attribute-component :brands="{{$brands}}" :product="{{$product}}"></attribute-component>
-                            <div>
-                                <label >وضعیت نشر</label>
+        <div class="col-sm-9 align-content-center" style="position: relative;right: 18%;">
+            <div class="card card-custom">
+                <div class="card-body">
+                    <div class="datatable datatable-bordered datatable-head-custom datatable-default datatable-primary datatable-loaded" id="kt_datatable" style="">
+                        @if(Session::has('province_success'))
+                            <div id="alert" class="alert alert-success">
                                 <div>
-                                    <input type="radio" name="status" value="0" @if($product->status==0) checked @endif ><span>منتشر نشده</span>
-                                    <input type="radio" name="status" value="1" @if($product->status==1) checked @endif><span>منتشر شده</span>
+                                    {{Session('province_success')}}
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label >قیمت</label>
-                                <input type="number" name="price" value="{{$product->price}}" class="form-control" placeholder="قیمت محصول">
+                        @elseif(Session::has('province_error'))
+                            <div class="alert alert-danger">
+                                <div>
+                                    {{Session('province_error')}}
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label >قیمت ویژه</label>
-                                <input type="number" name="discount_price" value="{{$product->discount_price}}" class="form-control" placeholder="قیمت ویژه محصول">
-                            </div>
-                            <div class="form-group">
-                                <label >توضیحات کوتاه</label>
-                                <textarea id="ShortDescription" name="short_description" class="form-control" >{{$product->short_description}}</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label >توضیحات اصلی</label>
-                                <textarea  id="longDescription" name="long_description" class="form-control" >{{$product->long_description}}</textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="photo">گالری تصاویر</label>
-                                <input type="hidden" name="photo_id[]" id="product-photo">
-                                <div class="form-control dropzone" id="photo"></div>
-                                @foreach($product->photos as $photo)
-                                    <div class="col-sm-3" id="updated_photo_{{$photo->id}}">
-                                        <img class="img-responsive" src="{{$photo->path}}">
-                                        <button type="button" class="btn btn-danger" onclick="removeImages({{$photo->id}})">حذف</button>
+                        @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <form method="post" action="\products\{{$product->id}}">
+                                @csrf
+                                <input type="hidden" name="_method" value="PATCH">
+                                <div class="form-group">
+                                    <label for="title">نام محصول</label>
+                                    <input type="text" name="title" value="{{$product->title}}" class="form-control" placeholder="نام محصول">
+                                </div>
+                                <div class="form-group">
+                                    <label for="slug">نام مستعار محصول</label>
+                                    <input type="text" name="slug" value="{{$product->slug}}" class="form-control" placeholder="نام مستعار محصول">
+                                </div>
+                                <attribute-component :product="{{$product}}"></attribute-component>
+                                <div>
+                                    <label >وضعیت نشر</label>
+                                    <div>
+                                        <input type="radio" name="status" value="0" @if($product->status==0) checked @endif ><span>منتشر نشده</span>
+                                        <input type="radio" name="status" value="1" @if($product->status==1) checked @endif><span>منتشر شده</span>
                                     </div>
-                                @endforeach
-                            </div>
-                            <div class="form-group">
-                                <label for="mete_title">عنوان سئو</label>
-                                <input type="text" name="slug" value="{{$product->meta_title}}" class="form-control" placeholder="عنوان سئو">
-                            </div>
-                            <div class="form-group">
-                                <label for="mete_desc">توضیحات سئو</label>
-                                <input type="text" name="slug" value="{{$product->mete_desc}}" class="form-control" placeholder="توضیحات سئو">
-                            </div>
-                            <div class="form-group">
-                                <label for="mete_keywords">کلمات کلیدی سئو</label>
-                                <input type="text" name="slug" value="{{$product->mete_keywords}}" class="form-control" placeholder="کلمات کلیدی سئو">
-                            </div>
-                            <button type="submit" onclick="productGallery()" class="btn btn-success pull-left">ذخیره</button>
-                        </form>
+                                </div>
+                                <div class="form-group">
+                                    <label >قیمت</label>
+                                    <input type="number" name="price" value="{{$product->price}}" class="form-control" placeholder="قیمت محصول">
+                                </div>
+                                <div class="form-group">
+                                    <label >قیمت ویژه</label>
+                                    <input type="number" name="discount_price" value="{{$product->discount_price}}" class="form-control" placeholder="قیمت ویژه محصول">
+                                </div>
+                                <div class="form-group">
+                                    <label >توضیحات کوتاه</label>
+                                    <textarea id="ShortDescription" name="short_description" class="form-control" >{{$product->short_description}}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label >توضیحات اصلی</label>
+                                    <textarea  id="longDescription" name="long_description" class="form-control" >{{$product->long_description}}</textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="photo">گالری تصاویر</label>
+                                    <input type="hidden" name="photo_id[]" id="product-photo">
+                                    <div class="form-control dropzone" id="photo"></div>
+                                    @foreach($product->photos as $photo)
+                                        <div class="col-sm-3" id="updated_photo_{{$photo->id}}">
+                                            <img class="img-responsive" src="{{$photo->path}}">
+                                            <button type="button" class="btn btn-danger" onclick="removeImages({{$photo->id}})">حذف</button>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <button type="submit" onclick="productGallery()" class="btn btn-success pull-left">ذخیره</button>
+                            </form>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /.box-body -->
     </section>
 @endsection
+
 @section('script-vuejs')
-    <script src="{{asset('/admin/js/app.js')}}"></script>
+    <script src="{{asset('/js/app.js')}}"></script>
 @endsection
-@section('scripts')
-    <script type="text/javascript" src="{{asset('/admin/dist/js/dropzone.js')}}"></script>
-    <script type="text/javascript" src="{{asset('/admin/plugins/ckeditor/ckeditor.js')}}"></script>
+@section('scripts-pic-ck')
+    <script type="text/javascript" src="{{asset('assets/plugins/custom/dropzone.js')}}"></script>
+    <script type="text/javascript" src="{{asset('assets/plugins/custom/ckeditor/ckeditor.js')}}"></script>
     <script>
         Dropzone.autoDiscover=false;
         var photosGallery=[]
@@ -109,7 +104,7 @@
             }
         });
         productGallery=function () {
-                document.getElementById('product-photo').value=photosGallery.concat(photo)
+            document.getElementById('product-photo').value = photosGallery
         }
         CKEDITOR.replace('ShortDescription',{
             customConfig:'config.js',
