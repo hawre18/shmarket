@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="{{asset('assets/css/dropzone.css')}}">
 @section('content')
     <section id="app" class="content" style="direction: rtl">
-    <div class="col-sm-9 align-content-center" style="position: relative;right: 18%;">
+        <div class="col-sm-9 align-content-center" style="position: relative;right: 18%;">
         <div class="card card-custom">
             <div class="card-header flex-wrap border-0 pt-6 pb-0">
                 <h3 class="card-title align-items-start flex-column">
@@ -270,9 +270,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
-    </div>
+        </div>
+
     </section>
 @endsection
 

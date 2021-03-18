@@ -80,6 +80,8 @@ Route::post('photos/upload','App\Http\Controllers\PhotoController@upload')->name
 Route::resource('photos','App\Http\Controllers\PhotoController');
 Route::get('/datatables', 'App\Http\Controllers\PagesController@datatables');
 Route::get('/ktdatatables', 'App\Http\Controllers\PagesController@ktDatatables');
+Route::get('slides.delete/{id}','App\Http\Controllers\SlideController@delete')->name('slides.delete');
+Route::resource('slides','App\Http\Controllers\SlideController');
 Route::get('/select2', 'App\Http\Controllers\PagesController@select2');
 Route::get('/jquerymask', 'App\Http\Controllers\PagesController@jQueryMask');
 Route::get('/icons/custom-icons', 'App\Http\Controllers\PagesController@customIcons');
