@@ -3,6 +3,7 @@
 
 
 <head>
+    <base href="../../../../">
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>فروشگاه</title>
@@ -16,7 +17,7 @@
 	============================================ -->
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/vendor/bootstrap.min.css">
     <!-- Icon Font CSS -->
     <link rel="stylesheet" href="assets/css/vendor/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/vendor/plaza-font.css">
@@ -33,12 +34,12 @@
     <!-- Main Style CSS (Please use minify version for better website load performance) -->
     <link rel="stylesheet" href="assets/css/style.css">
     <!--<link rel="stylesheet" href="assets/css/style.min.css">-->
-
+    <meta name="csrf-token" content="{{csrf_token()}}">
 </head>
 
 <body>
 
-<div class="main-wrapper">
+<div class="main-wrapper" id="app">
 
     <header class="header">
 
@@ -63,9 +64,6 @@
             </div>
 
         </div>
-        <!-- Header Top End -->
-
-        <!-- haeader Mid Start -->
         <div class="haeader-mid-area bg-gren border-bm-1 d-none d-lg-block ">
             <div class="container">
                 <div class="row align-items-center">
@@ -75,28 +73,7 @@
                         </div>
                     </div>
                     <div class="col-lg-5">
-                        <div class="search-box-wrapper">
-                            <div class="search-box-inner-wrap">
-                                <form class="search-box-inner">
-                                    <div class="search-select-box">
-                                        <select class="nice-select">
-                                            <optgroup label="organic food">
-                                                <option value="volvo">همه</option>
-                                                <option value="saab">ساعت</option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                    <div class="search-field-wrap">
-                                        <input type="text" class="search-field" placeholder="جستجو...">
-
-                                        <div class="search-btn">
-                                            <button><i class="icon-search"></i></button>
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </div>
+                        <search-products></search-products>
                     </div>
                     <div class="col-lg-4">
                         <div class="customer-wrap green-bg">
@@ -105,13 +82,11 @@
                                     <p><i class="icon-check-circle"></i><span>ارسال رایگان</span></p>
                                 </div>
                             </div>
-
                             <div class="single-costomer-box">
                                 <div class="single-costomer">
                                     <p><i class="icon-lock"></i><span>پرداخت امن</span></p>
                                 </div>
                             </div>
-
                             <div class="single-costomer-box">
                                 <div class="single-costomer">
                                     <p><i class="icon-bell"></i><span>پشتیبانی 24</span></p>
@@ -122,70 +97,106 @@
                 </div>
             </div>
         </div>
-        <!-- haeader Mid End -->
-
-        <!-- haeader bottom Start -->
         <div class="haeader-bottom-area bg-gren header-sticky">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-9 d-none d-lg-block">
-
                         <div class="main-menu-area white_text">
-                            <!--  Start Mainmenu Nav-->
                             <nav class="main-navigation">
                                 <ul>
-                                    <li class="active"><a href="index.html">خانه <i class="fa fa-angle-down"></i></a>
+                                    @foreach($categories=App\Models\Category::where('parent_id',null)->get() as $cat)
+                                        @if( $cat->parent_id == null )
+                                        <li class="active"><a href="{{route('category.index',['id'=>$cat])}}">{{$cat->name}}<i class="fa fa-angle-down"></i></a>
+                                            @if(!$cat->children->isEmpty())
                                         <ul class="sub-menu">
-                                            <li><a href="index.html">صفحه اصلی 1</a></li>
+                                            @include('users.partials.menu',['categories'=>$cat->childrenRecursive, 'level'=>1])
                                         </ul>
-                                    </li>
+                                            @endif
+                                        </li>
+                                        @endif
+                                    @endforeach
                                 </ul>
                             </nav>
-
                         </div>
                     </div>
-
                     <div class="col-5 col-md-6 d-block d-lg-none">
                         <div class="logo"><a href="index.html"><img src="assets/images/logo/logo.png" alt=""></a></div>
                     </div>
-
                     <div class="col-lg-3 col-md-6 col-7">
                         <div class="right-blok-box text-white d-flex">
-
                             <div class="user-wrap">
-                                <a href="#"><i class="icon-add-user"></i></a>
+                                @if(Auth::check())
+                                    <ul>
+                                        <li style="border: none;">
+                                            <a href="{{route('user.logout')}}" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
+                                                <i class="fa fa-sign-out"></i>
+                                            </a>
+                                        </li>
+                                        <li style="border: none;"><a href="{{route('user.profile')}}"><i class="fa fa-user"></i></a></li>
+                                    </ul>
+                                    <form id="logout-form" action="{{ route('user.logout') }}" method="post" style="display: none;">
+                                        @csrf
+                                    </form>
+                                @else
+                                    <ul>
+                                        <li style="border: none;"><a href="{{route('login')}}"><i class="fa fa-user-plus"></i></a></li>
+                                    </ul>
+                                @endif
                             </div>
-
-
                             <div class="shopping-cart-wrap">
-                                <a href="#"> <span class="cart-total-amunt">20000 تومان</span><i class="icon-shopping-bag2 float-left"></i><span class="cart-total">2</span></a>
+                                <a href="#">
+                                    <span class="cart-total-amunt">{{Session::has('cart') ? Session::get('cart')->totalPrice.'تومان':''}}</span>
+                                    <i class="icon-shopping-bag2 float-left"></i>
+                                    <span class="cart-total">{{Session::has('cart') ? Session::get('cart')->totalQty.'آیتم':''}}</span>
+                                </a>
                                 <ul class="mini-cart">
+                                    @if(Session::has('cart'))
                                     <li class="cart-item">
+                                        @foreach(Session::get('cart')->items as $product)
                                         <div class="cart-image">
-                                            <a href="single-product.html"><img alt="" src="assets/images/product/product-01.jpg"></a>
+                                            <a href="{{route('products.single',['id'=>$product['item']->id])}}"><img alt="" src="{{$product['item']->photos[0]->path}}"></a>
                                         </div>
                                         <div class="cart-title">
-                                            <a href="single-product.html">
-                                                <h4>محصول 1</h4>
+                                            <a href="{{route('products.single',['id'=>$product['item']->id])}}">
+                                                <h4>{{$product['item']->title}}</h4>
                                             </a>
                                             <div class="quanti-price-wrap">
-                                                <span class="quantity">1 ×</span>
-                                                <div class="price-box"><span class="new-price">130000 تومان</span></div>
+                                                <span class="quantity">{{$product['qty']}} ×</span>
+                                                <div class="price-box"><span class="new-price">{{$product['price']}} تومان</span></div>
                                             </div>
-                                            <a class="remove_from_cart" href="#"><i class="icon-x"></i></a>
+                                            <div >
+                                                <button class="btn btn-danger btn-xs remove" title="حذف" onclick="event.preventDefault();
+                                                    document.getElementById('remove-cart-item_{{$product['item']->id}}').submit();" type="button"><i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                            <form id="remove-cart-item_{{$product['item']->id}}" action="{{ route('cart.remove',['id'=>$product['item']->id]) }}" method="post" style="display: none;">
+                                                @csrf
+                                            </form>
                                         </div>
                                     </li>
+                                        @endforeach
                                     <li class="subtotal-box">
                                         <div class="subtotal-title">
-                                            <h3>جمع کل :</h3><span>260000 تومان</span>
+                                            <h3>جمع کل :</h3><span>{{Session::get('cart')->totalPurePrice}} تومان</span>
+                                        </div>
+                                    </li>
+                                        <li class="subtotal-box">
+                                        <div class="subtotal-title">
+                                            <h3>کسر هدیه: </h3><span>{{Session::get('cart')->totalDiscountPrice}} تومان</span>
+                                        </div>
+                                    </li><li class="subtotal-box">
+                                        <div class="subtotal-title">
+                                            <h3>قابل پرداخت :</h3><span>{{Session::get('cart')->totalPrice}} تومان</span>
                                         </div>
                                     </li>
                                     <li class="mini-cart-btns">
                                         <div class="cart-btns">
-                                            <a href="cart.html">مشاهده سبد</a>
-                                            <a href="checkout.html">پرداخت</a>
+                                            <a href="{{route('cart.get')}}">مشاهده سبد</a>
                                         </div>
                                     </li>
+                                    @else
+                                        <p>سبد خرید شما خالی است</p>
+                                    @endif
                                 </ul>
                             </div>
                             <div class="mobile-menu-btn d-block d-lg-none">
@@ -193,7 +204,6 @@
                                     <a href="#"><img src="assets/images/icon/bg-menu.png" alt=""></a>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -213,23 +223,23 @@
                 <div class="off-canvas-inner">
 
                     <div class="search-box-offcanvas">
-                        <form>
-                            <input type="text" placeholder="جستجو...">
-                            <button class="search-btn"><i class="icon-search"></i></button>
-                        </form>
+                        <search-products></search-products>
                     </div>
 
-                    <!-- mobile menu start -->
                     <div class="mobile-navigation">
-
-                        <!-- mobile menu navigation start -->
                         <nav>
                             <ul class="mobile-menu">
-                                <li class="menu-item-has-children"><a href="#">خانه</a>
-                                    <ul class="dropdown">
-                                        <li><a href="index.html">صفحه اصلی 1</a></li>
-                                    </ul>
-                                </li>
+                                @foreach($categories=App\Models\Category::where('parent_id',null)->get() as $cat)
+                                    @if( $cat->parent_id == null )
+                                        <li class="menu-item-has-children"><a href="{{route('category.index',['id'=>$cat])}}">{{$cat->name}}</a>
+                                            @if(!$cat->children->isEmpty())
+                                                <ul class="dropdown">
+                                                    @include('users.partials.menu',['categories'=>$cat->childrenRecursive, 'level'=>1])
+                                                </ul>
+                                            @endif
+                                        </li>
+                                    @endif
+                                @endforeach
                             </ul>
                         </nav>
                         <!-- mobile menu navigation end -->
@@ -365,7 +375,7 @@
 
 <!-- JS
 ============================================ -->
-
+<script src="{{asset('js/app.js')}}"></script>
 <!-- Modernizer JS -->
 <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
 <!-- jQuery JS -->

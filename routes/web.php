@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,7 +50,7 @@ Route::get('dashboard', function () {
 });
 Route::prefix('api')->group(function () {
     Route::get('/categories', 'App\Http\Controllers\CategoryController@apiIndex');
-    Route::post('/categories/attribute', 'App\Http\Controllers\\CategoryController@apiIndexAttribute');
+    Route::post('/categories/attribute', 'App\Http\Controllers\CategoryController@apiIndexAttribute');
     /*Route::get('/province','Frontend\AddressController@getAllProvince');**/
    /* Route::get('/cities/{provinceId}','Frontend\AddressController@getAllCities');*/
     /* Route::get('/products/{id}','Frontend\ProductController@apiGetProduct'); */
@@ -90,12 +90,38 @@ Route::get('/icons/fontawesome', 'App\Http\Controllers\PagesController@fontaweso
 Route::get('/icons/lineawesome', 'App\Http\Controllers\PagesController@lineawesome');
 Route::get('/icons/socicons', 'App\Http\Controllers\PagesController@socicons');
 Route::get('/icons/svg', 'App\Http\Controllers\PagesController@svg');
-
+Route::resource('/','App\Http\Controllers\HomeController');
 // Quick search dummy route to display html elements in search dropdown (header search)
 Route::get('/quick-search', 'App\Http\Controllers\PagesController@quickSearch')->name('quick-search');
 
 
 
 Auth::routes();
-
+Route::get('register/verify/{token}','App\Http\Controllers\Auth\RegisterController@verify');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('category/{id}','App\Http\Controllers\Frontend\ProductController@getProductByCategory')->name('category.index');
+
+
+//Route::prefix('api')->group(function () {
+    //Route::get('/categories', 'Backend\CategoryController@apiIndex');
+    //Route::post('/categories/attribute', 'Backend\CategoryController@apiIndexAttribute');
+    //Route::get('/province','Frontend\AddressController@getAllProvince');
+    //Route::get('/cities/{provinceId}','Frontend\AddressController@getAllCities');
+    //Route::get('/sort-products/{id}/{sort}/{paginate}','Frontend\ProductController@apiGetSortedProduct');
+//});
+Route::prefix('api')->group(function (){
+    Route::get('/products/{id}','App\Http\Controllers\Frontend\ProductController@apiGetProduct');
+    Route::get('/category-attribute/{id}','App\Http\Controllers\Frontend\ProductController@apiGetCategoryAttributes');
+    Route::get('/filter-products/{id}/{sort}/{paginate}/{attributes}','App\Http\Controllers\Frontend\ProductController@apiGetFilterProducts');
+});
+Route::post('/search/fetch','App\Http\Controllers\Frontend\LiveSearchController@fetch')->name('search.fetch');
+Route::post('/autocomplete/fetch','App\Http\Controllers\Frontend\SearchController@fetch')->name('autocomplete.fetch');
+Route::get('/add-to-cart/{id}','App\Http\Controllers\Frontend\CartController@addToCart')->name('cart.add');
+Route::post('/remove-to-cart/{id}','App\Http\Controllers\Frontend\CartController@removeItem')->name('cart.remove');
+Route::get('/cart','App\Http\Controllers\Frontend\CArtController@getCart')->name('cart.get');
+Route::get('product/single/{id}','App\Http\Controllers\Frontend\ProductController@getProduct')->name('products.single');
+Route::get('verification','App\Http\Controllers\Auth\VeryficationController@verify')->name('verification.verify');
+
+Route::group(['middleware'=>'auth'],function (){
+    Route::get('comment/store/{productId}/{userId}','App\Http\Controllers\Frontend\CommentController@store')->name('comment.store');
+});

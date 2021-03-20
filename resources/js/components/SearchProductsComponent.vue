@@ -1,13 +1,26 @@
 <template>
-<div>
-    <div class="input-group" >
-        <input type="text" placeholder="جستجو" v-model="qry" v-on:keyup="autoComplete" class="form-control input-lg" style="background-color: #ffffff;color: #000000;" />
-        <div class="text-center" v-if="results.length" style="position: relative;z-index: 1000;border: 1px solid #000;background: #fff; margin-top: 22%;">
-            <p v-for="result in results"  @click="productSingle(result)">{{result.title}}
-            </p>
+    <div class="search-box-wrapper">
+        <div class="search-box-inner-wrap">
+            <div class="search-box-inner">
+                <div class="search-select-box">
+                    <select class="nice-select">
+                        <optgroup label="organic food">
+                            <option value="volvo">همه</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="search-field-wrap">
+                    <input type="text" class="search-field" v-model="qry" v-on:keyup="autoComplete" placeholder="جستجو...">
+                    <div class="search-btn">
+                        <button><i class="icon-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center"  v-if="results.length" style="position: absolute; background: #fff; left: 5%; top:73%; width: 90%;">
+                <p v-for="result in results"  @click="productSingle(result)">{{result.title}}{{result.sku}}</p>
+            </div>
         </div>
     </div>
-</div>
 </template>
 
 <script>

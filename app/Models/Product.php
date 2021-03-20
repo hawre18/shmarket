@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+
     public function categories(){
         return $this->belongsToMany(Category::class);
     }
@@ -29,5 +30,9 @@ class Product extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    public function slides()
+    {
+        return $this->hasMany(Slide::class);
     }
 }

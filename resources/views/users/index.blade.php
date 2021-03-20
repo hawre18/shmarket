@@ -12,13 +12,19 @@
                                 <h5 class="categori_toggle">دسته بندی ها</h5>
                             </div>
                             <div class="categories_menu_toggle">
-                                <ul>
-                                    <li class="menu_item_children categorie_list"><a href="#">غذای اقیانوس<i class="fa fa-angle-left"></i></a>
-                                        <ul class="categories_mega_menu">
-                                            <li><a href="#">ماهی</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                                    <ul>
+                                        @foreach($categories=App\Models\Category::where('parent_id',null)->get() as $cat)
+                                            @if( $cat->parent_id == null )
+                                                <li><a href="{{route('category.index',['id'=>$cat])}}">{{$cat->name}}<i class="fa fa-angle-left"></i></a>
+                                                    @if(!$cat->children->isEmpty())
+                                                        <ul class="categories_mega_menu">
+                                                            @include('users.partials.menu',['categories'=>$cat->childrenRecursive, 'level'=>1])
+                                                        </ul>
+                                                    @endif
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul>
                             </div>
                         </div>
                     </div>
@@ -29,18 +35,22 @@
                         <div class="hero-slider-area hero-slider-one">
                             <div class="swiper-container gallery-top">
                                 <div class="swiper-wrapper">
-                                    <div class="swiper-slide" style="background-image:url(assets/images/slider/slide-bg-1.jpg)">
+                                    @foreach($slides as $slide)
+                                        @foreach($slide->photos as $photo)
+                                            @foreach($products as $product)
+                                    <div class="swiper-slide" style="background-image:url({{$photo->path}})">
                                         <div class="hero-content-one">
                                             <div class="slider-content-text">
-                                                <h2>سوپر مارکت <br>شگفت انگیز با دمای بالا </h2>
-                                                <p>پیشنهاد منحصر به فرد -20٪ تخفیف در این هفته </p>
+                                                <h2 style="color: #1f1f1f;">{{$slide->title}} <br>{{$slide->description}}</h2>
                                                 <div class="slider-btn">
-                                                    <a href="#">خرید کن</a>
+                                                    <a href="{{route('cart.add',$product->id)}}">خرید کن</a>
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
+                                            @endforeach
+                                        @endforeach
+                                    @endforeach
                                 </div>
                                 <div class="swiper-pagination"></div>
                             </div>

@@ -10,6 +10,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.Vue = require('vue');
 window.$ = require('jquery');
+var Paginate = require('vuejs-paginate');
 
 /**
  * The following block of code may be used to automatically register your
@@ -26,7 +27,7 @@ Vue.component('attribute-component', require('./components/AttributeComponent').
 Vue.component('select-city-component', require('./components/SelectCityComponent').default)
 Vue.component('product-component', require('./components/ProductComponent').default)
 Vue.component('search-products', require('./components/SearchProductsComponent').default)
-
+Vue.component('paginate',Paginate)
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

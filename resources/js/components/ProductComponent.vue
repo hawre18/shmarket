@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="row" v-if="products.last_page">
-                <div class="col-sm-12 text-center">
+                <div class="col-sm-12 pagination text-center">
                     <paginate
                         v-model="page"
                         :page-count="products.last_page"

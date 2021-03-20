@@ -1,64 +1,60 @@
 @extends('layouts.master')
 @section('content')
-<!-- breadcrumb-area start -->
     <div class="breadcrumb-area">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <!-- breadcrumb-list start -->
                     <ul class="breadcrumb-list">
-                        <li class="breadcrumb-item"><a href="index.html">خانه</a></li>
-                        <li class="breadcrumb-item active">جزئیات محص.ل</li>
+                        <li class="breadcrumb-item"><a href="{{route('home')}}">خانه</a></li>
+                        <li class="breadcrumb-item active">جزئیات محصول {{$product->title}}</li>
                     </ul>
-                    <!-- breadcrumb-list end -->
                 </div>
             </div>
         </div>
     </div>
-    <!-- breadcrumb-area end -->
-
-
-    <!-- main-content-wrap start -->
     <div class="main-content-wrap shop-page section-ptb">
         <div class="container">
             <div class="row single-product-area product-details-inner">
                 <div class="col-lg-5 col-md-6">
-                    <!-- Product Details Left -->
                     <div class="product-large-slider">
                         <div class="pro-large-img img-zoom">
-                            <img src="assets/images/product/details-04-600x600.jpg" alt="product-details" />
-                            <a href="assets/images/product/details-04-600x600.jpg" data-fancybox="images"><i class="fa fa-search"></i></a>
+                            <img src="{{$product->photos[0]->path}}" alt="product-details" />
+                            <a href="{{$product->photos[0]->path}}" data-fancybox="images"><i class="fa fa-search"></i></a>
                         </div>
                     </div>
                     <div class="product-nav">
+                        @foreach($product->photos as $photo)
                         <div class="pro-nav-thumb">
-                            <img src="assets/images/product/04-150x150.jpg" alt="product-details" />
+                            <img src="{{$photo->path}}" alt="product-details" />
                         </div>
+                        @endforeach
                     </div>
-                    <!--// Product Details Left -->
                 </div>
 
                 <div class="col-lg-7 col-md-6">
                     <div class="product-details-view-content">
                         <div class="product-info">
-                            <h3>نام محصول</h3>
+                            <h3>{{$product->title}}</h3>
                             <div class="product-rating d-flex">
                                 <a href="#reviews">(<span class="count">1</span> دیدگاه)</a>
                             </div>
                             <div class="price-box">
-                                <span class="new-price">89000 تومان</span>
-                                <span class="old-price">99000 تومان</span>
+                                @if(!$product->discount_price==null)
+                                <span class="new-price">{{$product->discount_price}} تومان</span>
+                                <span class="old-price">{{$product->price}} تومان</span>
+                                @else
+                                    <span class="new-price">{{$product->price}} تومان</span>
+                                @endif
                             </div>
-                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنو</p>
-
+                            <p>{!! $product->short_description !!}</p>
                             <div class="single-add-to-cart">
-                                <form action="#" class="cart-quantity d-flex">
-                                    <button class="add-to-cart" type="submit"> افزودن به سبد</button>
-                                </form>
+                                    <a href="{{route('cart.add',['id'=>$product->id])}}" class="add-to-cart" type="submit"> افزودن به سبد</a>
                             </div>
                             <ul class="stock-cont">
-                                <li class="product-sku">تعداد در بسته:  <span>10</span></li>
-                                <li class="product-stock-status">دسته‌بندی : <a href="#">مواد پروتئینی</a></li>
+                                @foreach($product->attributeValues as $attribute)
+                                <li class="product-sku">{{$attribute->attributeGroup->title}}:  <span>{{$attribute->title}}</span></li>
+                                @endforeach
                             </ul>
                             <div class="share-product-socail-area">
                                 <p>این محصول را به اشتراک بگذارید</p>
@@ -89,44 +85,37 @@
                     </div>
                     <div class="col-lg-12">
                         <div class="product_details_tab_content tab-content">
-                            <!-- Start Single Content -->
                             <div class="product_tab_content tab-pane active" id="description" role="tabpanel">
                                 <div class="product_description_wrap  mt-30">
                                     <div class="product_desc mb-30">
-                                        <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</p>
+                                        <p>{!! $product->long_description !!}</p>
                                     </div>
-
                                 </div>
                             </div>
-                            <!-- End Single Content -->
-                            <!-- Start Single Content -->
                             <div class="product_tab_content tab-pane" id="reviews" role="tabpanel">
                                 <div class="review_address_inner mt-30">
-                                    <!-- Start Single Review -->
                                     <div class="pro_review">
                                         <div class="review_thumb">
                                             <i class="fa fa-user-o"></i>
                                         </div>
+                                        @foreach($commentsProduct as $comments)
                                         <div class="review_details">
                                             <div class="review_info mb-10">
-                                                <h5>نیلوفر- <span>27 اردیبهشت 1398</span></h5>
+                                                <h5>{{$comments->user['name'].' '.$comments->user['last_name']}}<strong class="pull-left">{{\Hekmatinasser\Verta\Verta::instance($comments->created_at)->formatDifference(\Hekmatinasser\Verta\Verta::today('Asia/Tehran'))}}</strong></h5>
                                             </div>
-                                            <p>لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز</p>
+                                            <p>{{$comments->description}}</p>
                                         </div>
+                                        @endforeach
                                     </div>
-                                    <!-- End Single Review -->
                                 </div>
-                                <!-- Start RAting Area -->
                                 <div class="rating_wrap mt-50">
                                     <h5 class="rating-title-1">دیدگاه خود را بیان کنید </h5>
                                     <p>آدرس ایمیل شما منتشر نخواهد شد. فیلدهای مورد نیاز علامت گذاری شده اند *</p>
-                                    <h6 class="rating-title-2">امتیاز</h6>
                                 </div>
-                                <!-- End RAting Area -->
                                 <div class="comments-area comments-reply-area">
                                     <div class="row">
                                         <div class="col-lg-12">
-                                            <form action="#" class="comment-form-area">
+                                            <form action="\comment\store\{{$product->id}}\{{$user_id=1}}" class="comment-form-area">
                                                 <div class="row comment-input">
                                                     <div class="col-md-6 comment-form-author mt-15">
                                                         <label>نام و نام خانوادگی <span class="required">*</span></label>

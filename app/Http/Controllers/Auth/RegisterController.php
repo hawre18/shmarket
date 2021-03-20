@@ -1,13 +1,20 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+use DB;
+use Mail;
+use Session;
+use Validator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\EmailVerification;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use http\Exception;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -29,7 +36,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo ='/home';
 
     /**
      * Create a new controller instance.
@@ -50,9 +57,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'username' => 'string|max:255',
+            'email' => 'string|email|max:255|unique:users',
+
         ]);
     }
 
@@ -60,14 +67,49 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\Models\User
+     * @return \App\User
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+
+        $user= \App\Models\User::create(array(
+            'user_name'=>$data['user-name'],
+            'email'=>$data['user-email'],
+            'password'=>Hash::make($data['user-password']),
+            'email_token'=>sha1(time()),
+        ));
+        return $user;
+    }
+
+    public function register(Request $request)
+    {
+        // Laravel validation
+        $validator = $this->validator($request->all());
+        if ($validator->fails()) {
+            $this->throwValidationException($request, $validator);
+        }
+        // Using database transactions is useful here because stuff happening is actually a transaction
+        // I don't know what I said in the last line! Weird!
+        DB::beginTransaction();
+        try {
+            $user = $this->create($request->all());
+            // After creating the user send an email with the random token generated in the create method above
+            $email = new EmailVerification(new User(['email_token' => $user->email_token, 'user_name' => $user->user_name]));
+            Mail::to($user->email)->send($email);
+            DB::commit();
+            Session()->put('verify_email', 'ایمیل تایید حساب کاربری برای شما ارسال شد');
+            return back();
+        } catch (Exception $e) {
+            DB::rollback();
+            return back();
+        }
+    }
+    public function verify($token)
+    {
+        // The verified method has been added to the user model and chained here
+        // for better readability
+        User::where('email_token',$token)->firstOrFail()->verified();
+        Session::flash('verified_email', 'حساب کاربری شما با موفقیت تایید شد');
+        return redirect('login');
     }
 }
