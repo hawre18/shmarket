@@ -1,77 +1,86 @@
-@extends('layouts.app')
-
+@extends('layouts.master')
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
-
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+    <!-- breadcrumb-area start -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-list">
+                        <li class="breadcrumb-item"><a href="index.html">صفحه اصلی</a></li>
+                        <li class="breadcrumb-item active">ورود - ثبت نام</li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <!-- breadcrumb-area end -->
+
+    <!-- main-content-wrap start -->
+    <div class="main-content-wrap section-ptb lagin-and-register-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                    <div class="login-register-wrapper">
+                        <!-- login-register-tab-list start -->
+                        <div class="login-register-tab-list nav">
+                            <a class="active" data-toggle="tab" href="#lg1">
+                                <h4> ورود </h4>
+                            </a>
+                            <a data-toggle="tab" href="#lg2">
+                                <h4> ثبت نام </h4>
+                            </a>
+                        </div>
+                        <!-- login-register-tab-list end -->
+                        <div class="tab-content">
+                            <div id="lg1" class="tab-pane active">
+                                <div class="login-form-container">
+                                    <div class="login-register-form">
+                                        <form  method="post"action="{{ url('/login') }}">
+                                            {{ csrf_field() }}
+                                            <div class="login-input-box">
+                                                <input type="text" name="email" placeholder="ایمیل">
+                                                <input type="password" name="password" placeholder="رمز عبور">
+                                            </div>
+                                            <div class="button-box">
+                                                <div class="login-toggle-btn">
+                                                    <input type="checkbox">
+                                                    <label>من را به یاد آور</label>
+                                                    <a href="#">رمز عبور خود را فراموش کرده اید؟</a>
+                                                </div>
+                                                <div class="button-box">
+                                                    <button class="login-btn btn" type="submit"><span>ورود</span></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="lg2" class="tab-pane">
+                                <div class="login-form-container">
+                                    <div class="login-register-form">
+                                        <form method="post" action="{{ url('/register') }}">
+                                            {{ csrf_field() }}
+                                            <div class="login-input-box">
+                                                <input type="text" name="user-name" placeholder="نام کاربری">
+                                                <input type="password" name="user-password" placeholder="رمز عبور">
+                                                <input name="user-email" placeholder="ایمیل" type="email">
+                                            </div>
+                                            <div class="button-box">
+                                                <button class="register-btn btn" type="submit"><span>ثبت نام</span></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- main-content-wrap end -->
+@endsection
+@section('script')
 @endsection

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -39,10 +41,9 @@ class LoginController extends Controller
     }
     public function credentials(Request $request)
     {
-        return $request;
         return [
-            'email' => $request->user_email,
-            'password' => $request->user_password,
+            'email' => $request->email,
+            'password' => $request->password,
             'verified' => 1,
         ];
     }

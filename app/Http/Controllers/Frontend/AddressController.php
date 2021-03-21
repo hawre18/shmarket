@@ -1,21 +1,26 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Frontend;
 
 use App\Models\Address;
 use App\Models\City;
+use App\Http\Controllers\Controller;
 use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\Controller;
 
 class AddressController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $addresses=Address::with(['city','province'])->paginate(10);
-        return view('users.address-index',compact(['addresses']));
+        $addresses=Address::with(['city','province'])->where('user_id',Auth::user()->id)->paginate(10);
+        return view('users.profile.address.index',compact(['addresses']));
     }
 
     /**
@@ -25,7 +30,7 @@ class AddressController extends Controller
      */
     public function create()
     {
-        return view('admin.attribute.create');
+        return view('users.profile.address.create');
     }
     public function getAllProvince()
     {
@@ -60,14 +65,19 @@ class AddressController extends Controller
             $address->city_id = $request->input('city');
             $address->post_code = $request->input('post_code');
             $address->phone = $request->input('phone');
-            $address->user_id = 1;
+            $address->user_id = Auth::user()->id;
             $address->save();
-            Session::flash('address_success','ثبت آدرس با موفقیت انجام شد');
+            Session()->put('address_success','ثبت آدرس با موفقیت انجام شد');
             return redirect('/addresses');
         }catch (Exception $e){
-            Session::flash('address_warning','ثبت آدرس با خطا مواجه شد لطفا مجددا تلاش کنید');
+            Session()->put('address_warning','ثبت آدرس با خطا مواجه شد لطفا مجددا تلاش کنید');
             return redirect('/addresses');
         }
+    }
+
+    public function contactme()
+    {
+        return view('users.contact.contact-us');
     }
 
     /**
@@ -90,7 +100,7 @@ class AddressController extends Controller
     public function edit($id)
     {
         $address=Address::with('province','city')->whereId($id)->first();
-        return view('users.address-edit',compact('address'));
+        return view('users.profile.address.edit',compact('address'));
     }
 
     /**
@@ -118,13 +128,13 @@ class AddressController extends Controller
             $address->city_id=$request->input('city');
             $address->post_code=$request->input('post_code');
             $address->phone=$request->input('phone');
-            $address->user_id=1;
+            $address->user_id=Auth::user()->id;
             $address->save();
-            Session::flash('address_success','آدرس با موفقیت ویرایش شد');
+            Session()->put('address_success','آدرس با موفقیت ویرایش شد');
             return redirect('/addresses');
         }
         catch (\Exception $m){
-            Session::flash('address_error','خطایی در ویرایش به وجود آمده لطفا مجددا تلاش کنید');
+            Session()->put('address_error','خطایی در ویرایش به وجود آمده لطفا مجددا تلاش کنید');
             return redirect('/addresses');
         }
     }
@@ -133,10 +143,10 @@ class AddressController extends Controller
         try{
             $address=Address::findorfail($id);
             $address->delete();
-            Session::flash('address_success','آدرس با موفقیت حذف شد');
+            Session()->put('address_success','آدرس با موفقیت حذف شد');
             return redirect('/addresses');}
         catch (\Exception $m) {
-            Session::flash('address_error', 'خطایی در حذف به وجود آمده لطفا مجددا تلاش کنید');
+            Session()->put('address_error', 'خطایی در حذف به وجود آمده لطفا مجددا تلاش کنید');
             return redirect('/addresses');
         }
 

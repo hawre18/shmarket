@@ -139,7 +139,7 @@
                                     </form>
                                 @else
                                     <ul>
-                                        <li style="border: none;"><a href="{{route('login')}}"><i class="fa fa-user-plus"></i></a></li>
+                                        <li style="border: none;"><a href="{{route('register')}}"><i class="fa fa-user-plus"></i></a></li>
                                     </ul>
                                 @endif
                             </div>

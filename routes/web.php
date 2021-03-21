@@ -13,14 +13,16 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+Route::get('register/verify/{token}','App\Http\Controllers\Auth\RegisterController@verify');
+Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+Route::get('category/{id}','App\Http\Controllers\Frontend\ProductController@getProductByCategory')->name('category.index');
+
 
 Route::get('index', function () {
     return view('users.index');
 });
 
-Route::get('login', function () {
-    return view('users.login-user');
-});
 Route::get('about-us', function () {
     return view('users.about-sux');
 });
@@ -96,12 +98,6 @@ Route::get('/quick-search', 'App\Http\Controllers\PagesController@quickSearch')-
 
 
 
-Auth::routes();
-Route::get('register/verify/{token}','App\Http\Controllers\Auth\RegisterController@verify');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('category/{id}','App\Http\Controllers\Frontend\ProductController@getProductByCategory')->name('category.index');
-
-
 //Route::prefix('api')->group(function () {
     //Route::get('/categories', 'Backend\CategoryController@apiIndex');
     //Route::post('/categories/attribute', 'Backend\CategoryController@apiIndexAttribute');
@@ -120,8 +116,12 @@ Route::get('/add-to-cart/{id}','App\Http\Controllers\Frontend\CartController@add
 Route::post('/remove-to-cart/{id}','App\Http\Controllers\Frontend\CartController@removeItem')->name('cart.remove');
 Route::get('/cart','App\Http\Controllers\Frontend\CArtController@getCart')->name('cart.get');
 Route::get('product/single/{id}','App\Http\Controllers\Frontend\ProductController@getProduct')->name('products.single');
-Route::get('verification','App\Http\Controllers\Auth\VeryficationController@verify')->name('verification.verify');
+Route::get('verification','App\Http\Controllers\Auth\VerificationController@verify')->name('verification.verify');
 
 Route::group(['middleware'=>'auth'],function (){
     Route::get('comment/store/{productId}/{userId}','App\Http\Controllers\Frontend\CommentController@store')->name('comment.store');
+    Route::get('/profile','App\Http\Controllers\Frontend\HomeController@profile')->name('user.profile');
+    Route::resource('addresses','App\Http\Controllers\Frontend\AddressController');
+    Route::get('addresses.delete/{id}','App\Http\Controllers\Frontend\AddressController@delete')->name('addresses.delete');
+    Route::get('/logout','App\Http\Controllers\Auth\LoginController@logout')->name('user.logout');
 });

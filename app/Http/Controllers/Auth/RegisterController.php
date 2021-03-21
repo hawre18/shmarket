@@ -110,6 +110,6 @@ class RegisterController extends Controller
         // for better readability
         User::where('email_token',$token)->firstOrFail()->verified();
         Session::flash('verified_email', 'حساب کاربری شما با موفقیت تایید شد');
-        return redirect('login');
+        return redirect('register');
     }
 }

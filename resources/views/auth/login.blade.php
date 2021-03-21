@@ -40,8 +40,8 @@
                                         <form  method="post"action="{{ url('/login') }}">
                                             {{ csrf_field() }}
                                             <div class="login-input-box">
-                                                <input type="text" name="user_email" placeholder="ایمیل">
-                                                <input type="password" name="user_password" placeholder="رمز عبور">
+                                                <input type="text" name="email" placeholder="ایمیل">
+                                                <input type="password" name="password" placeholder="رمز عبور">
                                             </div>
                                             <div class="button-box">
                                                 <div class="login-toggle-btn">
