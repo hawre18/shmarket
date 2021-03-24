@@ -19,8 +19,9 @@ class AddressController extends Controller
      */
     public function index()
     {
+
         $addresses=Address::with(['city','province'])->where('user_id',Auth::user()->id)->paginate(10);
-        return view('users.profile.address.index',compact(['addresses']));
+        return view('users.profile.index',compact(['addresses']));
     }
 
     /**
@@ -60,7 +61,6 @@ class AddressController extends Controller
         try {
             $address = new Address();
             $address->address = $request->input('address');
-            $address->company = $request->input('company');
             $address->province_id = $request->input('province');
             $address->city_id = $request->input('city');
             $address->post_code = $request->input('post_code');
@@ -68,10 +68,10 @@ class AddressController extends Controller
             $address->user_id = Auth::user()->id;
             $address->save();
             Session()->put('address_success','ثبت آدرس با موفقیت انجام شد');
-            return redirect('/addresses');
+            return redirect('/profile');
         }catch (Exception $e){
             Session()->put('address_warning','ثبت آدرس با خطا مواجه شد لطفا مجددا تلاش کنید');
-            return redirect('/addresses');
+            return redirect('/profile');
         }
     }
 
@@ -100,7 +100,7 @@ class AddressController extends Controller
     public function edit($id)
     {
         $address=Address::with('province','city')->whereId($id)->first();
-        return view('users.profile.address.edit',compact('address'));
+        return view('users.profile.address.edit',compact(['address']));
     }
 
     /**
@@ -113,7 +113,6 @@ class AddressController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'company' => 'required|min:3|max:255',
             'address' => 'required|min:3|max:255',
             'province' => 'required',
             'city' => 'required',
@@ -122,7 +121,6 @@ class AddressController extends Controller
         ]);
         try{
             $address=Address::findorfail($id);
-            $address->company=$request->input('company');
             $address->address=$request->input('address');
             $address->province_id=$request->input('province');
             $address->city_id=$request->input('city');

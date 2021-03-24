@@ -2334,6 +2334,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -38719,45 +38720,44 @@ var render = function() {
               ]
             }
           },
-          _vm._l(_vm.provinces, function(province) {
-            return _c("option", { domProps: { value: province.id } }, [
-              _vm._v(_vm._s(province.name))
-            ])
-          }),
-          0
+          [
+            _c("option", [_vm._v(" --- لطفا انتخاب کنید --- ")]),
+            _vm._v(" "),
+            _vm._l(_vm.provinces, function(province) {
+              return _c("option", { domProps: { value: province.id } }, [
+                _vm._v(_vm._s(province.name))
+              ])
+            })
+          ],
+          2
         )
       ])
     ]),
     _vm._v(" "),
-    _vm.cities.length > 0
-      ? _c("div", { staticClass: "form-group required" }, [
-          _c(
-            "label",
-            { staticClass: "col-sm-2 control-label", attrs: { for: "city" } },
-            [_vm._v("شهر")]
-          ),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-sm-10" }, [
-            _c(
-              "select",
-              {
-                staticClass: "form-control",
-                attrs: { id: "city", name: "city" }
-              },
-              [
-                _c("option", [_vm._v(" --- لطفا انتخاب کنید --- ")]),
-                _vm._v(" "),
-                _vm._l(_vm.cities, function(city) {
-                  return _c("option", { domProps: { value: city.id } }, [
-                    _vm._v(_vm._s(city.name))
-                  ])
-                })
-              ],
-              2
-            )
-          ])
-        ])
-      : _vm._e()
+    _c("div", { staticClass: "form-group required" }, [
+      _c(
+        "label",
+        { staticClass: "col-sm-2 control-label", attrs: { for: "city" } },
+        [_vm._v("شهر")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-10" }, [
+        _c(
+          "select",
+          { staticClass: "form-control", attrs: { id: "city", name: "city" } },
+          [
+            _c("option", [_vm._v(" --- لطفا انتخاب کنید --- ")]),
+            _vm._v(" "),
+            _vm._l(_vm.cities, function(city) {
+              return _c("option", { domProps: { value: city.id } }, [
+                _vm._v(_vm._s(city.name))
+              ])
+            })
+          ],
+          2
+        )
+      ])
+    ])
   ])
 }
 var staticRenderFns = []

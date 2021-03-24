@@ -4,11 +4,12 @@
             <label for="province" class="col-sm-2 control-label">استان</label>
             <div class="col-sm-10">
                 <select id="province" class="form-control" name="province" v-model="province" @change="getAllCities()">
+                    <option> --- لطفا انتخاب کنید --- </option>
                     <option v-for="province in provinces" :value="province.id" >{{province.name}}</option>
                 </select>
             </div>
         </div>
-        <div class="form-group required" v-if="cities.length>0">
+        <div class="form-group required" >
             <label for="city" class="col-sm-2 control-label">شهر</label>
             <div class="col-sm-10">
                 <select class="form-control" id="city" name="city">

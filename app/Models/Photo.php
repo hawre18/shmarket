@@ -23,4 +23,5 @@ class Photo extends Model
     {
         return $this->belongsToMany(Slide::class,'photo_slide','photo_id','slide_id');
     }
+
 }

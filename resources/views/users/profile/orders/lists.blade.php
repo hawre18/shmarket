@@ -1,54 +1,76 @@
-@extends('frontend.layout.master')
+@extends('layouts.master')
+@section('styl')
+    <style>
+        nav ul ul {
+            display: none;
+        }
+
+        nav ul li:hover > ul {
+            display: block;
+        }
+    </style>
 @section('content')
-<div class="row center-block">
-    @if(Session::has('success'))
-        <div class="alert alert-danger">
-            <div>{{Session('success')}}</div>
-        </div>
-    @endif
-    <aside id="column-right" class="col-sm-3 hidden-xs">
-        <h3 class="subtitle">حساب کاربری</h3>
-        <div class="list-group">
-            <ul class="list-item">
-                <li><a href="{{route('addresses.index')}}">لیست آدرس ها</a></li>
-                <li><a href="{{route('favorites.index')}}">لیست علاقه مندی</a></li>
-                <li><a href="{{route('orders.userindex')}}">تاریخچه سفارشات</a></li>
-                <li><a href="{{route('payments.index')}}">تراکنش ها</a></li>
-            </ul>
-        </div>
-    </aside>
-    <div id="content" class="col-sm-9">
-        <div class="box box-info">
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="header-row text-center">
-                    <h3>محصولات سفارش {{$order->id}}</h3>
-                    <hr/>
+    <!-- breadcrumb-area start -->
+    <div class="breadcrumb-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <!-- breadcrumb-list start -->
+                    <ul class="breadcrumb-list">
+                        <li class="breadcrumb-item"><a href="index.html">صفحه اصلی</a></li>
+                        <li class="breadcrumb-item active">حساب کاربری</li>
+                    </ul>
+                    <!-- breadcrumb-list end -->
                 </div>
-                <div class="table-responsive">
-                    <table class="table no-margin">
-                        <thead>
-                        <tr>
-                            <th class="text-center">تصویر محصولات</th>
-                            <th class="text-center">نام محصولات</th>
-                            <th class="text-center">تعداد</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($order->products as $product)
-                            <tr>
-                                <td class="text-center"><img width="15%" src="{{$product->photos[0]->path}}"></td>
-                                <td class="text-center">{{$product->title}}</td>
-                                <td class="text-center">{{$product->pivot->qty}}</td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.table-responsive -->
             </div>
-            <!-- /.box-body -->
         </div>
     </div>
-</div>
+    <!-- breadcrumb-area end -->
+
+
+    <!-- main-content-wrap start -->
+    <div class="main-content-wrap section-ptb my-account-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="account-dashboard">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-2">
+                                <a class="btn-bg-dark">برگشت</a>
+                            </div>
+                            <div class="col-md-12 col-lg-10">
+                                <!-- Tab panes -->
+                                <div class="tab-content dashboard-content">
+                                    <div class="tab-pane active">
+                                        <table class="table no-margin">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-center">تصویر محصولات</th>
+                                                <th class="text-center">نام محصولات</th>
+                                                <th class="text-center">تعداد</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($order->products as $product)
+                                                <tr>
+                                                    <td class="text-center"><img width="15%" src="{{$product->photos[0]->path}}"></td>
+                                                    <td class="text-center">{{$product->title}}</td>
+                                                    <td class="text-center">{{$product->pivot->qty}}</td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- main-content-wrap end -->
 @endsection
+@section('script-vuejs')
+    <script src="{{asset('/admin/js/app.js')}}"></script>
+@endsection
+

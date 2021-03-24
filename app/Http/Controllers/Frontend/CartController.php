@@ -38,6 +38,6 @@ class CartController extends Controller
             $addresses=Address::with('province','city')->where('user_id',Auth::user()->id)->get();
         }
         $cart = Session::has('cart') ? Session::get('cart') : null;
-        return view('frontend.cart.index', compact(['cart','addresses']));
+        return view('users.cart.index', compact(['cart','addresses']));
     }
 }

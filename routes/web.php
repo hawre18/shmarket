@@ -109,6 +109,9 @@ Route::prefix('api')->group(function (){
     Route::get('/products/{id}','App\Http\Controllers\Frontend\ProductController@apiGetProduct');
     Route::get('/category-attribute/{id}','App\Http\Controllers\Frontend\ProductController@apiGetCategoryAttributes');
     Route::get('/filter-products/{id}/{sort}/{paginate}/{attributes}','App\Http\Controllers\Frontend\ProductController@apiGetFilterProducts');
+    Route::get('/province','App\Http\Controllers\Frontend\AddressController@getAllProvince');
+    Route::get('/cities/{provinceId}','App\Http\Controllers\Frontend\AddressController@getAllCities');
+
 });
 Route::post('/search/fetch','App\Http\Controllers\Frontend\LiveSearchController@fetch')->name('search.fetch');
 Route::post('/autocomplete/fetch','App\Http\Controllers\Frontend\SearchController@fetch')->name('autocomplete.fetch');
@@ -124,4 +127,11 @@ Route::group(['middleware'=>'auth'],function (){
     Route::resource('addresses','App\Http\Controllers\Frontend\AddressController');
     Route::get('addresses.delete/{id}','App\Http\Controllers\Frontend\AddressController@delete')->name('addresses.delete');
     Route::get('/logout','App\Http\Controllers\Auth\LoginController@logout')->name('user.logout');
+    Route::get('/order-verify','App\Http\Controllers\Frontend\OrderController@verify')->name('order.verify');
+    Route::get('orders','App\Http\Controllers\Frontend\OrderController@index')->name('profile.orders');
+    Route::get('orders/lists/{id}','App\Http\Controllers\Frontend\OrderController@getOrderLists')->name('profile.orders.lists');
+    Route::get('orders','App\Http\Controllers\Frontend\OrderController@index')->name('orders.usersindex');
+    Route::get('orders/products/{id}','App\Http\Controllers\Frontend\OrderController@getOrderLists')->name('orders.products');
+    Route::post('/coupon','App\Http\Controllers\Frontend\CouponController@addCoupon')->name('coupon.add');
+
 });
